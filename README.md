@@ -1,11 +1,34 @@
-# Project-101 : Kittens Carousel Static Website deployed on AWS EC2 using Cloudformation
-
+# Project-101 : Static Website on Amazon Linux 2023 EC2 using CloudFormation
+![Project_101](Pro_Project_101.png)
 ## Description
-Kittens Carousel is a static website application deployed with Apache Web Server on AWS Elastic Compute Cloud (EC2) Instance using AWS Cloudformation Service. 
+This is a static website application deployed with Apache Web Server on AWS Elastic Compute Cloud (EC2) Instance using AWS Cloudformation Service. 
+This repository contains an __AWS CloudFormation template__ to automate the deployment of a __static website__ on an __Amazon Linux 2023 EC2 instance__. The template provisions an EC2 instance with Apache, downloads static content (images and an HTML file) from your Github repository, and serves them as a static website.
+
+## Features
+- __Automated Setup__: Launch an EC2 instance running __Amazon Linux 2023__ with __Apache HTTP server__ configured.
+
+- __Static Website__: Automatically downloads static files (images and HTML) from a GitHub repository and serves them.
+
+- __Security__: The template creates a security group that allows __SSH (port 22)__ and __HTTP (port 80)__ traffic.
+
+- __Customizable__: Easily modify the `UserData` section to update or change the content being served by the instance.
+
+- __Outputs the Website URL__: After stack creation, the public DNS URL of the EC2 instance hosting the website is displayed.
+
+## CloudFormation Template Overview
+This _CloudFormation_ template performs the following tasks:
+
+- Creates an EC2 instance using the latest Amazon Linux 2023 AMI.
+
+- Installs Apache HTTP server and configures it to serve static files.
+
+- Downloads static content (images and HTML) from a GitHub repository.
+
+- Restarts Apache to apply changes.
+
+- Outputs the EC2 instance's public URL, which can be accessed to view the static website.
 
 ## Problem Statement
-
-![Project_101](Pro_Project_101.png)
 
 - Your company has recently started a web application project that will serve as an attraction point for pet lovers. As a first step of the project, developers in your team have prepared a preliminary design of the kittens carousel application and pushed the necessary files for the project to the repository on GitHub. 
 
@@ -33,6 +56,18 @@ Kittens Carousel is a static website application deployed with Apache Web Server
 
       - Kittens Carousel Application Website URL should be given as output by Cloudformation Service after the stack is created.
 
+
+## Prerequisites
+Before using this template, ensure you have the following:
+
+- __AWS Account__: You need an AWS account to deploy resources.
+
+- __SSH Key Pair__: Create a key pair in AWS EC2 and provide the key name in the template `(KeyName: mesud-course)`.
+
+- __GitHub Repository__: Ensure the GitHub repository with the static website files (`cat0.jpg`, `cat1.jpg`, `cat2.jpg`, `and index.html`) is publicly accessible.
+
+- __AWS CLI/Console__: You can use either the AWS Management Console or AWS CLI to deploy the CloudFormation stack.
+  
 ## Project Skeleton 
 
 ```
@@ -47,57 +82,35 @@ Kittens Carousel is a static website application deployed with Apache Web Server
         |----cat2.jpg    # Given to the students (image file)
 ```
 
+## Usage
+## A- Deploy via AWS Console
+Navigate to the __AWS CloudFormation__ section of the AWS Management Console.
+
+ 1- Choose __Create stack__ and select __Upload a template file__.
+
+ 2- Upload the `cfn-website-template.yaml` file from this repository.
+
+ 3- Enter the required parameters and options (e.g., KeyPair name).
+
+ 4- Click __Create Stack__.
+
+ 5- Wait for the stack to be created, and AWS will automatically launch the EC2 instance.
+ 
+## B- Deploy via AWS CLI
+If you prefer to use the AWS CLI, you can deploy the stack with the following command:
+```
+aws cloudformation create-stack --stack-name StaticWebsiteStack --template-body file://cfn-website-template.yaml
+```
+
 ## Expected Outcome
 
 ![Project 101 : Kittens Carousel Application Snapshot](./project-101-snapshot.png)
 
-### At the end of the project, following topics are to be covered;
 
-- Apache Web Server Installation on Linux
-
-- Static Website Deployment
-
-- Bash scripting
-
-- AWS EC2 Service
-
-- AWS Security Groups Configuration
-
-- AWS Cloudformation Service
-
-- AWS Cloudformation Template Design
-
-- Git & Github for Version Control System
-
-### At the end of the project, students will be able to;
-
-- install Apache Web Server on Amazon Linux 2023.
-
-- improve bash scripting skills using `user data` section in Cloudformation to install and setup web application on EC2 Instance.
-
-- configure AWS EC2 Instance and Security Groups.
-
-- configure Cloudformation template to use AWS Resources.
-
-- use AWS Cloudformation Service to launch stacks.
-
-- use git commands (push, pull, commit, add etc.) and Github as Version Control System.
-
-## Steps to Solution
-  
-- Step 1: Download or clone project definition from `clarusway` repo on Github 
-
-- Step 2: Create project folder for local public repo on your pc
-
-- Step 3: Prepare a cloudformation template to deploy your app on EC2 Instance
-
-- Step 4: Push your application into your own public repo on Github
-
-- Step 5: Deploy your application on AWS Cloud using Cloudformation template to showcase your app within your team.
 
 ## Notes
 
-- Customize the application by hard-coding your name instead of `student_name` within `index.html`.
+- The security group allows __SSH (port 22)__ and __HTTP (port 80)__ traffic. You can modify these settings under the `MySecGroupNew` resource.
 
 ## Resources
 
