@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+ CloudFormation template to create a static website on Amazon Linux 2023 EC2 instance.
+Resources:
+  myinstance: #creating new ec2 instance (you can use different name)
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref LatestAmiId #referencing to the latest Amazon Linux 2 AMI ID
+      InstanceType: t2.micro #instance type
+      KeyName: mesud-course #referencing to the key pair name
+      SecurityGroups: 
+        - !Ref MySecGroup #referencing to the security group below.
+
+#UserData is used to run the commands on the instance when it is launched.
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash 
+          yum update -y
+          yum install -y httpd git
+          systemctl start httpd
+          systemctl enable httpd
+          cd /var/www/html
+          git clone https://github.com/mesudp/static-website.git
+          cp -r static-website/static-web/* .
+          rm -rf static-website
+          systemctl restart httpd
+      Tags: #tagging the instance
+        - Key: Name
+          Value: Web Server of my Stack
+
+
+  MySecGroup: #creating new security group
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows SSH and HTTP for Static Webiste. 
+      SecurityGroupIngress: 
+      #port 22 represent SSH
+        - CidrIp: 0.0.0.0/0 #represents all IPv4 addresses—it is the broadest possible range, covering every device on the internet.
+          FromPort: 22 
+          IpProtocol: tcp
+          ToPort: 22 
+      #port 80 represent HTTP
+        - CidrIp: 0.0.0.0/0 #represents all IPv4 addresses—it is the broadest possible range, covering every device on the internet.
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80 
+#Parameter for the latest AMI ID which allow users to get latest image of the Amazon Linux 2023 automatically.
+Parameters:
+  LatestAmiId:
+    Description: "Region specific image from the Parameter for the latest Amazon Linux 2023 AMI ID"
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64" #latest Amazon Linux 2023 AMI ID
+
+#Outputs to get the URL of the static website created.
+Outputs:
+  WebsiteURL:
+    Description: 'Static Webiste URL'
+    Value: !Sub "http://${myinstance.PublicDnsName}" #"myinstance" is the name of the instance created above.
+
