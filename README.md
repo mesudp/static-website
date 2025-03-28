@@ -28,34 +28,6 @@ This _CloudFormation_ template performs the following tasks:
 
 - Outputs the EC2 instance's public URL, which can be accessed to view the static website.
 
-## Problem Statement
-
-- Your company has recently started a web application project that will serve as an attraction point for pet lovers. As a first step of the project, developers in your team have prepared a preliminary design of the kittens carousel application and pushed the necessary files for the project to the repository on GitHub. 
-
-- Your task is to show the how the design of the application looks as static web page in the development environment. Thus, you need to deploy the web application using the `index.html` and an images given within the `static-web` folder. Note the following for your web application.
-   
-   - User should face first with `index.html` when the web app starts.
-
-   - Application should be deployed on Apache Web Server.
-
-   - Application should be deployed in the development environment on AWS EC2 Instance using AWS Cloudformation Service. In the development environment, you can configure your Cloudformation template using the following,
-
-      - The application stack should be created with new AWS resources. 
-   
-      - Bonus:!!!The application should run on the latest version of Amazon Linux 2023 Image . Here is the link where you can find information about this challenge.
-      
-      https://docs.aws.amazon.com/linux/al2023/ug/ec2.html#launch-from-cloudformation
-        
-      - EC2 Instance type can be configured as `t2.micro`.
-
-      - Instance launched by Cloudformation should be tagged `Web Server of StackName` 
-
-      - The Web Application should be accessible via web browser from anywhere.
-
-      - The Application files should be downloaded from the Github repo and deployed on the EC2 Instance using user data script within Cloudformation template. 
-
-      - Kittens Carousel Application Website URL should be given as output by Cloudformation Service after the stack is created.
-
 
 ## Prerequisites
 Before using this template, ensure you have the following:
@@ -115,3 +87,4 @@ aws cloudformation create-stack --stack-name StaticWebsiteStack --template-body 
 ## Resources
 
 - [AWS Cloudformation User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
+- [Launching the latest AL2023 AMI using AWS CloudFormation](https://docs.aws.amazon.com/linux/al2023/ug/ec2.html#launch-from-cloudformation)
